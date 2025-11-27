@@ -3,6 +3,7 @@ import express from "express";
 // Import des routeurs
 import { pizzasRouter } from "./routes/pizzas.js";
 import { pizzaRouter } from "./routes/pizza.js";
+import { ingredientsRouter } from "./routes/ingredients.js";
 
 const app = express();
 const port = process.env.PORT || 3002;
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 // Monte les routeurs sur leurs chemins respectifs
 app.use("/pizzas", pizzasRouter);
 app.use("/pizza", pizzaRouter);
+app.use("/ingredients", ingredientsRouter);
 
 
 // Démarrage du serveur
