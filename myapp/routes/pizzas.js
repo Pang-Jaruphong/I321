@@ -1,9 +1,19 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET pizzas listing. */
-router.get('/', function(req, res, next) {
-    res.send('Liste de pizzas');
-});
+const dbcon = require('../config/database');
 
+/* GET pizzas listing. */
+router.get('/',  async function (req, res, next) {
+    try {
+        const sqlQuery = 'SELECT * FROM pizzas';
+        const [rows, fields] = await dbcon.execute(sqlQuery);
+        res.json(rows);
+    } catch (err) {
+        console.error("Erreur de BDD", err.message);
+        res.status(500).json({
+            message: 'Erreur serveur : Impossible de lire la base de données.',
+            error: err.message});
+    }
+});
 module.exports = router;
