@@ -6,7 +6,6 @@ import pool from "../db/db.js";
 
 
 const ingredientsRouter = express.Router();
-//const pizzaRouter = express.Router();
 
 
 ingredientsRouter.get('/', async (req, res) => {
@@ -17,5 +16,6 @@ ingredientsRouter.get('/', async (req, res) => {
         res.status(500).json({ error: "Erreur serveur" });
     }
 });
+
 
 export { ingredientsRouter };

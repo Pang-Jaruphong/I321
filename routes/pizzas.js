@@ -6,7 +6,7 @@ import pool from "../db/db.js";
 
 
 const pizzasRouter = express.Router();
-//const pizzaRouter = express.Router();
+
 
 
 pizzasRouter.get('/', async (req, res) => {

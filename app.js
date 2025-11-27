@@ -4,6 +4,7 @@ import express from "express";
 import { pizzasRouter } from "./routes/pizzas.js";
 import { pizzaRouter } from "./routes/pizza.js";
 import { ingredientsRouter } from "./routes/ingredients.js";
+import { pizzaingredientsRouter } from "./routes/pizza.js";
 
 const app = express();
 const port = process.env.PORT || 3002;
@@ -20,7 +21,7 @@ app.get("/", (req, res) => {
 app.use("/pizzas", pizzasRouter);
 app.use("/pizza", pizzaRouter);
 app.use("/ingredients", ingredientsRouter);
-
+app.use("/pizza", pizzaingredientsRouter);
 
 // Démarrage du serveur
 app.listen(port, () => {
