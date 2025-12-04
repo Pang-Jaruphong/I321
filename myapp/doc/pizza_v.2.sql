@@ -46,7 +46,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `pizza321`.`promotion` (
   `id` INT NOT NULL,
   `pizzas_id` INT NOT NULL,
-  `descripstion` VARCHAR(100) NULL,
+  `description` VARCHAR(100) NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_promotion_pizzas1_idx` (`pizzas_id` ASC) VISIBLE,
   CONSTRAINT `fk_promotion_pizzas1`
@@ -61,7 +61,7 @@ ENGINE = InnoDB;
 -- Table `pizza321`.`composition`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `pizza321`.`composition` (
-  `incredients_id` INT NOT NULL,
+  `ingredients_id` INT NOT NULL,
   `pizzas_id` INT NOT NULL,
   PRIMARY KEY (`incredients_id`, `pizzas_id`),
   INDEX `fk_incredients_has_pizzas_pizzas1_idx` (`pizzas_id` ASC) VISIBLE,
@@ -82,3 +82,4 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
