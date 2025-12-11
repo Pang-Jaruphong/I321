@@ -17,4 +17,28 @@ router.get('/',  async function (req, res, next) {
     }
 });
 
+router.post('/create', async (req, res) => {
+    try {
+        const { name } = req.body;
+        if (!name || name.trim().length === 0) {
+            return res.status(400).json({ error: "Le nom de l'ingrédient est manquant dans l'URL." });
+        }
+        const sql = `INSERT INTO ingredients (name) VALUES (?)`;
+        const [result] = await dbcon.query(sql, [name.trim()]);
+
+        res.json({
+            message: `L'ingrédient ${name} a bien été ajouté !`,
+            ingredient: { id: result.insertId, name: name.trim() }
+        });
+    } catch (err) {
+        if (err.code === 'ER_DUP_ENTRY') {
+            return res.status(409).json({ // 409 Conflict
+                error: `L'ingrédient "${req.params.name}" existe déjà.`
+            });
+        }
+
+        res.status(500).json({ error: "Erreur serveur" });
+    }
+});
+
 module.exports = router;
