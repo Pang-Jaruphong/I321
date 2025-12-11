@@ -5,6 +5,7 @@ import { pizzasRouter } from "./routes/pizzas.js";
 import { pizzaRouter } from "./routes/pizza.js";
 import { ingredientsRouter } from "./routes/ingredients.js";
 import { pizzaingredientsRouter } from "./routes/pizza.js";
+import { pizza_du_jourRouter } from "./routes/pizza_du_jour.js";
 
 const app = express();
 const port = process.env.PORT || 3002;
@@ -22,6 +23,7 @@ app.use("/pizzas", pizzasRouter);
 app.use("/pizza", pizzaRouter);
 app.use("/ingredients", ingredientsRouter);
 app.use("/pizza", pizzaingredientsRouter);
+app.use("/pizzadujour", pizza_du_jourRouter);
 
 // Démarrage du serveur
 app.listen(port, () => {

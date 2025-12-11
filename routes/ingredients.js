@@ -17,5 +17,21 @@ ingredientsRouter.get('/', async (req, res) => {
     }
 });
 
+ingredientsRouter.post('/create/:name', async (req, res) => {
+    try {
+        const { name } = req.params;
+        const sql = `INSERT INTO ingredients (name) VALUES (?)`;
+        const [result] = await pool.query(sql, [name]);
+
+        res.json({
+            message: `L'ingrédient ${name} a bien été ajouté !`,
+            ingredient: { id: result.insertId, name }
+        });
+    } catch (err) {
+        res.status(500).json({ error: "Erreur serveur" });
+    }
+});
+
+
 
 export { ingredientsRouter };
