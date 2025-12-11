@@ -32,4 +32,19 @@ pizzasRouter.post('/create/:name', async (req, res) => {
     }
 });
 
+pizzasRouter.delete('/delete/:name', async (req, res) => {
+    try {
+        const { name } = req.params;
+        const sql = `DELETE FROM pizzas WHERE name = (?)`;
+        const [result] = await pool.query(sql, [name]);
+
+        res.json({
+            message: `La pizza ${name} a bien été supprimée !`,
+            ingredient: { id: result.insertId, name }
+        });
+    } catch (err) {
+        res.status(500).json({ error: "Erreur serveur" });
+    }
+});
+
 export { pizzasRouter };
