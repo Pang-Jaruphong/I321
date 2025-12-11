@@ -36,14 +36,26 @@ ingredientsRouter.post('/create/:name', async (req, res) => {
 ingredientsRouter.delete('/delete/:name', async (req, res) => {
     try {
         const { name } = req.params;
-        const sql = `DELETE FROM ingredients WHERE name = (?)`;
-        const [result] = await pool.query(sql, [name]);
 
-        res.json({
-            message: `L'ingrédient' ${name} a bien été supprimée !`,
-            ingredient: { id: result.insertId, name }
-        });
+        const [rows] = await pool.query(
+            "SELECT id FROM ingredients WHERE name = ?",
+            [name]
+        );
+
+        if (rows.length === 0) {
+            return res.status(404).json({ error: "Aucun ingrédient trouvé avec ce nom." });
+        }
+
+        const ingredientId = rows[0].id;
+
+
+        await pool.query("DELETE FROM composition WHERE incredients_id = ?", [ingredientId]);
+
+        await pool.query("DELETE FROM ingredients WHERE id = ?", [ingredientId]);
+
+        res.json({ message: `L'ingrédient' ${name} a bien été supprimé !` });
     } catch (err) {
+        console.error(err);
         res.status(500).json({ error: "Erreur serveur" });
     }
 });
