@@ -42,4 +42,71 @@ router.post('/create', async (req, res) => {
         res.status(500).json({ error: "Erreur serveur" });
     }
 });
+
+router.patch('/update/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, price } = req.body;
+
+        if (!id || isNaN(parseInt(id))) {
+            return res.status(400).json({error: "L'ID de la pizza est manquant"})
+        }
+
+        if (name === undefined && price === undefined) {
+            return res.status(400).json({error: "Aucun champ n'a été fourni pour la modification"});
+        }
+        let sql = `UPDATE pizzas SET `;
+        const values = [];
+        const updates = [];
+
+        if (name !== undefined){
+            if (name.trim().length === 0){
+                return res.status(400).json({error : "Le nom ne peut pas être vide."})
+            }
+            updates.push('name = ?');
+            values.push(name.trim());
+        }
+
+        if (price !== undefined){
+            const parsedPrice = parseFloat(price);
+            if (isNaN(parsedPrice) || parsedPrice <= 0) {
+                return res.status(400).json({error : "Le prix doit être un nombre possitif"})
+            }
+            updates.push('price = ?');
+            values.push(parsedPrice);
+        }
+
+        sql += updates.join(', ') + " WHERE id = ?";
+        values.push(id);
+        // ajouter l'ID à la fin du tableau de valeurs
+
+        // Exécution de la requête
+        const [result] = await dbcon.query(sql, values);
+
+        //Vérification du résultat
+        if (result.affectedRows === 0) {
+            // Si 0 ligne affectée, soit l'ID n'existe pas, soit les données n'ont pas changé
+            const [check] = await dbcon.query('SELECT id FROM pizzas WHERE id = ?', [id]);
+            if (check.length === 0) {
+                return res.status(404).json({ message: `Pizza avec l'ID ${id} non trouvée.` });
+            }
+            // Si la pizza existe mais rien n'a changé
+            return res.status(200).json({ message: `Pizza avec l'ID ${id} mise à jour (aucune modification appliquée).` });
+        }
+
+        res.status(200).json({
+            message: `Pizza avec l'ID ${id} modifiée avec succès.`,
+            changes: updates.map(u => u.split(' ')[0]) // Afficher les champs modifiés
+        });
+
+    } catch (err) {
+        // Gestion des erreurs (Doublon, erreur serveur, etc.)
+        if (err.code === 'ER_DUP_ENTRY') {
+            return res.status(409).json({ error: `Ce nom de pizza existe déjà.` });
+        }
+        console.error("Erreur serveur (PATCH /update/:id):", err.message);
+        res.status(500).json({ error: "Erreur serveur interne lors de la modification de la pizza." });
+    }
+
+})
 module.exports = router;
