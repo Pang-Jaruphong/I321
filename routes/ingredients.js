@@ -60,6 +60,23 @@ ingredientsRouter.delete('/delete/:name', async (req, res) => {
     }
 });
 
+//Voici une variante permettant de supprimer par id.
+
+ingredientsRouter.delete('/deleteid/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        await pool.query("DELETE FROM composition WHERE incredients_id = ?", [id]);
+
+        await pool.query("DELETE FROM ingredients WHERE id = ?", [id]);
+
+        res.json({ message: `L'ingrédient dont l'id est ${id} a bien été supprimé !` });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Erreur serveur" });
+    }
+});
 
 
 export { ingredientsRouter };

@@ -64,4 +64,26 @@ pizzasRouter.delete('/delete/:name', async (req, res) => {
     }
 }); //Cette manière de DELETE est une version améliorée de la précédente, proposée par ChatGPT
 
+//Voici une variante permettant de supprimer par id.
+
+pizzasRouter.delete('/deleteid/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // 1) Supprimer les compositions liées
+        await pool.query("DELETE FROM composition WHERE pizzas_id = ?", [id]);
+
+        // 2) Supprimer les promotions liées
+        await pool.query("DELETE FROM promotion WHERE pizzas_id = ?", [id]);
+
+        // 3) Supprimer la pizza
+        await pool.query("DELETE FROM pizzas WHERE id = ?", [id]);
+
+        res.json({ message: `La pizza dont l'id est ${id} a bien été supprimée !` });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Erreur serveur" });
+    }
+});
+
 export { pizzasRouter };
