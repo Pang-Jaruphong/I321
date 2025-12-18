@@ -46,8 +46,4 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500).json({error: err.message || "Erreur serveur"});
 });
 
-app.get('/test', (req, res) => {
-    res.send('SERVEUR OK');
-});
-
 module.exports = app;
