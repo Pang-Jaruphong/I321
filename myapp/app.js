@@ -21,6 +21,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use((req, res, next) => {
+    console.log('REQ:', req.method, req.url);
+    next();
+});
+
 app.use('/', indexRouter);
 app.use('/pizzas', pizzasRouter);
 app.use('/ingredients',ingredientsRouter);
@@ -39,6 +44,10 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500).json({error: err.message || "Erreur serveur"});
+});
+
+app.get('/test', (req, res) => {
+    res.send('SERVEUR OK');
 });
 
 module.exports = app;

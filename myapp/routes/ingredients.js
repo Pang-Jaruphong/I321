@@ -41,4 +41,49 @@ router.post('/create', async (req, res) => {
     }
 });
 
+router.patch('/update/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name } = req.body;
+
+        if (!id || isNaN(id)) {
+            return res.status(400).json({
+                error: "ID invalide"
+            });
+        }
+
+        if (!name || name.trim().length === 0) {
+            return res.status(400).json({
+                error: "Le nom est obligatoire"
+            });
+        }
+
+        const sql = 'UPDATE ingredients SET name = ? WHERE id = ?';
+        const [result] = await dbcon.query(sql, [name.trim(), id]);
+
+        if (result.affectedRows === 0) {
+            // rien n'a été modifié
+            return res.status(404).json({
+                error: "Ingrédient non trouvé ou aucune modification"
+            });
+        }
+
+        return res.status(200).json({
+            message: "Ingrédient modifié avec succès"
+        });
+
+    } catch (err) {
+        if (err.code === 'ER_DUP_ENTRY') {
+            return res.status(409).json({
+                error: "Ce nom existe déjà"
+            });
+        }
+
+        console.error("Erreur serveur (PATCH /update/:id):", err);
+        return res.status(500).json({
+            error: "Erreur serveur"
+        });
+    }
+});
+
 module.exports = router;
