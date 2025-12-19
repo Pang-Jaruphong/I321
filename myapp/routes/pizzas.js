@@ -107,6 +107,37 @@ router.patch('/update/:id', async (req, res) => {
         console.error("Erreur serveur (PATCH /update/:id):", err.message);
         res.status(500).json({ error: "Erreur serveur interne lors de la modification de la pizza." });
     }
-
 })
+
+router.delete('/:id', async function (req, res) {
+    const pizzaId = req.params.id;
+    const connection = await dbcon.getConnection(); // Récupérer une connexion pour la transaction
+
+    try {
+        await connection.beginTransaction();
+
+        // 1. Supprimer les liens dans la table de composition (les ingrédients de cette pizza)
+        await connection.execute('DELETE FROM composition WHERE pizzas_id = ?', [pizzaId]);
+
+        // 2. Supprimer les éventuelles promotions liées
+        await connection.execute('DELETE FROM promotion WHERE pizzas_id = ?', [pizzaId]);
+
+        // 3. Supprimer la pizza elle-même
+        const [result] = await connection.execute('DELETE FROM pizzas WHERE id = ?', [pizzaId]);
+
+        await connection.commit();
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "Pizza non trouvée" });
+        }
+
+        res.json({ message: "Pizza supprimée avec succès" });
+    } catch (err) {
+        await connection.rollback();
+        console.error(err);
+        res.status(500).json({ message: "Erreur lors de la suppression", error: err.message });
+    } finally {
+        connection.release();
+    }
+});
 module.exports = router;

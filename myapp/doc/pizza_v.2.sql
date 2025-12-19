@@ -21,7 +21,7 @@ USE `pizza321` ;
 -- Table `pizza321`.`ingredients`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `pizza321`.`ingredients` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INGREMENT,
   `name` VARCHAR(45) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
@@ -32,7 +32,7 @@ ENGINE = InnoDB;
 -- Table `pizza321`.`pizzas`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `pizza321`.`pizzas` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INGREMENT,
   `name` VARCHAR(45) NULL,
   `price` FLOAT NULL,
   PRIMARY KEY (`id`),
@@ -63,18 +63,18 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `pizza321`.`composition` (
   `ingredients_id` INT NOT NULL,
   `pizzas_id` INT NOT NULL,
-  PRIMARY KEY (`incredients_id`, `pizzas_id`),
-  INDEX `fk_incredients_has_pizzas_pizzas1_idx` (`pizzas_id` ASC) VISIBLE,
-  INDEX `fk_incredients_has_pizzas_incredients_idx` (`incredients_id` ASC) VISIBLE,
-  CONSTRAINT `fk_incredients_has_pizzas_incredients`
-    FOREIGN KEY (`incredients_id`)
+  PRIMARY KEY (`ingredients_id`, `pizzas_id`),
+  INDEX `fk_ingredients_has_pizzas_pizzas1_idx` (`pizzas_id` ASC) VISIBLE,
+  INDEX `fk_ingredients_has_pizzas_ingredients_idx` (`ingredients_id` ASC) VISIBLE,
+  CONSTRAINT `fk_ingredients_has_pizzas_ingredients`
+    FOREIGN KEY (`ingredients_id`)
     REFERENCES `pizza321`.`ingredients` (`id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_incredients_has_pizzas_pizzas1`
+  CONSTRAINT `fk_ingredients_has_pizzas_pizzas1`
     FOREIGN KEY (`pizzas_id`)
     REFERENCES `pizza321`.`pizzas` (`id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 

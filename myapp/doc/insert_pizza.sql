@@ -36,3 +36,10 @@ INSERT INTO promotion (id, pizzas_id, descripstion) VALUES
 (101, 1, 'Quantité limitée à 10 par soir'),
 (102, 2, 'Le mercredi, la Margherita est à 10.-'),
 (103, 3, 'Le samedi et dimanche, 4 Saison est à 14.-');
+
+ALTER TABLE pizzas
+    ADD COLUMN is_special BOOLEAN DEFAULT FALSE;
+
+UPDATE pizzas
+SET is_special = TRUE
+WHERE id = 1;
