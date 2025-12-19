@@ -20,15 +20,15 @@ INSERT INTO pizzas (name, price) VALUES
 
 -- composition du pizza
 -- La Diavola (ID 1) : Mozzarella (ID 1), Merguez (ID 3), Salami piquant (ID 4), Poivrons (ID 5), Oignons rouges (ID 6)
-INSERT INTO composition (incredients_id, pizzas_id) VALUES
+INSERT INTO composition (ingredients_id, pizzas_id) VALUES
 (1, 1), (3, 1), (4, 1), (5, 1), (6, 1);
 
 -- Margherita (ID 2) : Mozzarella (ID 1), Sauce Tomate (ID 2)
-INSERT INTO composition (incredients_id, pizzas_id) VALUES
+INSERT INTO composition (ingredients_id, pizzas_id) VALUES
 (1, 2), (2, 2);
 
 -- 4 Saisons (ID 3) : Mozzarella (ID 1), Jambon (ID 7), Champignons (ID 8), Poivrons (ID 5), Artichauts (ID 9)
-INSERT INTO composition (incredients_id, pizzas_id) VALUES
+INSERT INTO composition (ingredients_id, pizzas_id) VALUES
 (1, 3), (7, 3), (8, 3), (5, 3), (9, 3);
 
 -- promotion avec le pizza et sa descripstion
