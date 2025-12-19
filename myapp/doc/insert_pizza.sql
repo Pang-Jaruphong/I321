@@ -32,7 +32,7 @@ INSERT INTO composition (ingredients_id, pizzas_id) VALUES
 (1, 3), (7, 3), (8, 3), (5, 3), (9, 3);
 
 -- promotion avec le pizza et sa descripstion
-INSERT INTO promotion (id, pizzas_id, descripstion) VALUES
+INSERT INTO promotion (id, pizzas_id, description) VALUES
 (101, 1, 'Quantité limitée à 10 par soir'),
 (102, 2, 'Le mercredi, la Margherita est à 10.-'),
 (103, 3, 'Le samedi et dimanche, 4 Saison est à 14.-');

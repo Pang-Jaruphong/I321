@@ -24,7 +24,7 @@ router.get('/',  async function (req, res, next) {
         if (rows.length === 0) {
             return res.status(404).send({message : 'Aucune pizza du jour'})
         }
-
+        // On construit l'objet de base à partir de la première ligne
         const specialPizza = {
             id: rows[0].pizza_id,
             name: rows[0].pizza_name,
@@ -34,10 +34,9 @@ router.get('/',  async function (req, res, next) {
         };
 
         rows.forEach(row => {
-            specialPizza.ingredients.push({
-                name: row.ingredients_name,
-                description:row.ingredients_description
-            });
+            if (row.ingredients_name) { // On vérifie qu'il y a bien un ingrédient
+                specialPizza.ingredients.push(row.ingredients_name);
+            }
         });
 
         res.json(specialPizza);
@@ -49,7 +48,39 @@ router.get('/',  async function (req, res, next) {
     }
 });
 
-router.patch('/set-pizza-du-jour/:id', async function (req, res) {
+// PATCH /pizzas/special/:id
+router.patch('/:id', async function (req, res) {
+    const pizzaId = req.params.id;
+    const connection = await dbcon.getConnection();
+
+    try {
+        await connection.beginTransaction();
+
+        // 1. On remet tout à FALSE
+        await connection.execute('UPDATE pizzas SET is_special = FALSE');
+
+        // 2. On met la pizza choisie à TRUE
+        const [result] = await connection.execute(
+            'UPDATE pizzas SET is_special = TRUE WHERE id = ?',
+            [pizzaId]
+        );
+
+        if (result.affectedRows === 0) {
+            await connection.rollback(); // Annule la remise à FALSE générale
+            return res.status(404).json({ message: "Erreur : L'ID de pizza n'existe pas." });
+        }
+
+        await connection.commit();
+        res.json({ message: "Pizza du jour mise à jour !" });
+    } catch (err) {
+        await connection.rollback();
+        res.status(500).json({ error: err.message });
+    } finally {
+        connection.release();
+    }
+});
+/*
+router.patch('/special/:id', async function (req, res) {
     const pizzaId = req.params.id;
     const connection = await dbcon.getConnection();
 
@@ -80,5 +111,5 @@ router.patch('/set-pizza-du-jour/:id', async function (req, res) {
         connection.release();
     }
 });
-
+*/
 module.exports = router;
