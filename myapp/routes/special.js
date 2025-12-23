@@ -49,6 +49,7 @@ router.get('/',  async function (req, res, next) {
 });
 
 // PATCH /pizzas/special/:id
+// Aide de Gemini pour règler la fonction
 router.patch('/:id', async function (req, res) {
     const pizzaId = req.params.id;
     const connection = await dbcon.getConnection();
@@ -78,37 +79,5 @@ router.patch('/:id', async function (req, res) {
         connection.release();
     }
 });
-/*
-router.patch('/special/:id', async function (req, res) {
-    const pizzaId = req.params.id;
-    const connection = await dbcon.getConnection();
 
-    try {
-        await connection.beginTransaction();
-
-        // 1. Désactiver toutes les pizzas du jour actuelles
-        await connection.execute('UPDATE pizzas SET is_special = FALSE');
-
-        // 2. Activer la pizza spécifique demandée
-        const [result] = await connection.execute(
-            'UPDATE pizzas SET is_special = TRUE WHERE id = ?',
-            [pizzaId]
-        );
-
-        await connection.commit();
-
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ message: "Pizza non trouvée." });
-        }
-
-        res.json({ message: "La Pizza du Jour a été mise à jour avec succès !" });
-    } catch (err) {
-        await connection.rollback();
-        console.error("Erreur lors de la mise à jour :", err.message);
-        res.status(500).json({ message: "Erreur serveur", error: err.message });
-    } finally {
-        connection.release();
-    }
-});
-*/
 module.exports = router;
