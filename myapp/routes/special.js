@@ -54,24 +54,23 @@ router.patch('/:id', async function (req, res) {
     const connection = await dbcon.getConnection();
 
     try {
-        await connection.beginTransaction();
 
-        // 1. On remet tout à FALSE
-        await connection.execute('UPDATE pizzas SET is_special = FALSE');
-
-        // 2. On met la pizza choisie à TRUE
-        const [result] = await connection.execute(
-            'UPDATE pizzas SET is_special = TRUE WHERE id = ?',
-            [pizzaId]
-        );
-
-        if (result.affectedRows === 0) {
-            await connection.rollback(); // Annule la remise à FALSE générale
+        // Attention il faut vérifier que l'ID existe dans la base de données
+        const [rows] = await connection.execute('SELECT id FROM pizzas WHERE id = ?', [pizzaId]);
+        if (rows.length === 0) {
             return res.status(404).json({ message: "Erreur : L'ID de pizza n'existe pas." });
         }
 
-        await connection.commit();
-        res.json({ message: "Pizza du jour mise à jour !" });
+        // Opération pour modifier pizza du jour
+        const [result] = await connection.execute(
+            'UPDATE pizzas SET is_special = (id = ?)',
+            [pizzaId]
+        );
+
+        res.json({
+            message: "Pizza du jour mise à jour !" ,
+            updatedId : pizzaId
+        });
     } catch (err) {
         await connection.rollback();
         res.status(500).json({ error: err.message });
