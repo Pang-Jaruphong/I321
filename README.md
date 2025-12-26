@@ -6,7 +6,7 @@ I321_Jaruphong_Gaëtan
 
 Node.js et npm, télécharger depuis https://nodejs.org/fr
 
-# .2 Cloner ou télécharger le projet : 
+# 1.2 Cloner ou télécharger le projet : 
 
 Avec Git clone https://github.com/Pang-Jaruphong/I321.git
 
