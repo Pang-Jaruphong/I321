@@ -30,25 +30,25 @@ Ou modifier le fichier bin/www
 
 # 2. Fonctions principaux
 ## Pizza
-Get/pizzas : Liste toutes les pizzas
-Post/pizzas/create : Ajouter une nouvelle pizza
-Patch/pizzas/update/:id : Modifier une pizza existante
+Get/pizzas : Liste toutes les pizzas  
+Post/pizzas/create : Ajouter une nouvelle pizza  
+Patch/pizzas/update/:id : Modifier une pizza existante  
 Delete/pizzas/:id : Supprimer une pizza
 
 ## Ingrédients
-Get/ingredients : Liste toutes les ingrédients
-Post/ingredients/create : Créer un ingrédient
+Get/ingredients : Liste toutes les ingrédients  
+Post/ingredients/create : Créer un ingrédient  
 Delete/ingredients/:id : Supprimer un ingrédient
 
 ## Spécial (Pizza du jour)
-Get/special : Récupérer la pizza du jour avec ses détails
+Get/special : Récupérer la pizza du jour avec ses détails  
 Patch/special/:id : Définir une pizza comme étant la pizza du jour
 
 # 3. Technologies utilisées
-Node.js & Express
-MySQL (avec mysql2)
+Node.js & Express  
+MySQL (avec mysql2)  
 Swager (Documentation API)
 
 # 4. Swagger documentation
-Installation avec la commande dans le terminal :
+Installation avec la commande dans le terminal :  
 npm install swagger-jsdoc swagger-ui-express
