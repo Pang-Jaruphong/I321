@@ -3,6 +3,37 @@ var router = express.Router();
 
 const dbcon = require('../config/database');
 
+/**
+ * @swagger
+ * /pizzas:
+ *  get:
+ *    summary: Liste des pizzas
+ *    responses:
+ *      200:
+ * description: Succès
+ */
+
+/**
+ * @swagger
+ * /pizzas/create:
+ *  post:
+ *    summary: Ajouter une nouvelle pizza
+ *    tags: [Pizzas]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              name:
+ *                type: string
+ *              price:
+ *                type: number
+ *    responses:
+ *      200:
+ * description: Pizza ajoutée avec succès
+ */
 /* GET pizzas listing. */
 router.get('/',  async function (req, res, next) {
     try {
