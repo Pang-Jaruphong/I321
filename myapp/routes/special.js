@@ -2,6 +2,75 @@ var express = require('express');
 const dbcon = require("../config/database");
 var router = express.Router();
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     SpecialPizza:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           example: 1
+ *         name:
+ *           type: string
+ *           example: "Pizza du Chef"
+ *         price:
+ *           type: number
+ *           example: 12.5
+ *         description:
+ *           type: string
+ *           example: "Promo du jour"
+ *         ingredients:
+ *           type: array
+ *           items:
+ *             type: string
+ *           example: ["Fromage", "Tomate", "Basilic"]
+ */
+
+/**
+ * @swagger
+ * /special:
+ *   get:
+ *     summary: Récupérer la pizza du jour
+ *     tags: [Special]
+ *     responses:
+ *       200:
+ *         description: Pizza du jour
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/SpecialPizza'
+ *       404:
+ *         description: Aucune pizza du jour
+ *       500:
+ *         description: Erreur serveur
+ */
+
+/**
+ * @swagger
+ * /special/{id}:
+ *   patch:
+ *     summary: Définir une pizza comme pizza du jour
+ *     tags: [Special]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID de la pizza à définir comme pizza du jour
+ *         schema:
+ *           type: integer
+ *           example: 4
+ *     responses:
+ *       200:
+ *         description: Pizza du jour mise à jour
+ *       404:
+ *         description: Pizza non trouvée
+ *       500:
+ *         description: Erreur serveur
+ */
+
+
 /* GET pizza listing. */
 router.get('/',  async function (req, res, next) {
     try {
