@@ -3,6 +3,89 @@ var router = express.Router();
 
 const dbcon = require('../config/database');
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Ingredient:
+ *       type: object
+ *       required:
+ *         - name
+ *       properties:
+ *         id:
+ *           type: integer
+ *           example: 1
+ *         name:
+ *           type: string
+ *           example: "Mozzarella"
+ */
+
+/**
+ * @swagger
+ * /ingredients:
+ *   get:
+ *     summary: Liste des ingrédients
+ *     tags: [Ingredients]
+ *     responses:
+ *       200:
+ *         description: Liste des ingrédients
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Ingredient'
+ *       500:
+ *         description: Erreur serveur
+ */
+
+/**
+ * @swagger
+ * /ingredients/create:
+ *   post:
+ *     summary: Ajouter un ingrédient
+ *     tags: [Ingredients]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Ingredient'
+ *     responses:
+ *       200:
+ *         description: Ingrédient ajouté avec succès
+ *       400:
+ *         description: Nom manquant ou invalide
+ *       409:
+ *         description: Ingrédient déjà existant
+ *       500:
+ *         description: Erreur serveur
+ */
+
+/**
+ * @swagger
+ * /ingredients/{id}:
+ *   delete:
+ *     summary: Supprimer un ingrédient
+ *     tags: [Ingredients]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID de l'ingrédient à supprimer
+ *         schema:
+ *           type: integer
+ *           example: 2
+ *     responses:
+ *       200:
+ *         description: Ingrédient supprimé avec succès
+ *       404:
+ *         description: Ingrédient non trouvé
+ *       500:
+ *         description: Erreur serveur
+ */
+
+
 /* GET incredients listing. */
 router.get('/',  async function (req, res, next) {
     try {
