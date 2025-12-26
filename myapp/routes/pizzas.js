@@ -5,12 +5,40 @@ const dbcon = require('../config/database');
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     Pizza:
+ *       type: object
+ *       required:
+ *         - name
+ *         - price
+ *       properties:
+ *         id:
+ *           type: integer
+ *           example: 1
+ *         name:
+ *           type: string
+ *           example: "Margherita"
+ *         price:
+ *           type: number
+ *           example: 13.0
+ */
+
+/**
+ * @swagger
  * /pizzas:
  *  get:
  *    summary: Liste des pizzas
+ *    tags: [Pizzas]
  *    responses:
  *      200:
- * description: Succès
+ *        description: Succès
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/Pizza'
  */
 
 /**
@@ -24,16 +52,73 @@ const dbcon = require('../config/database');
  *      content:
  *        application/json:
  *          schema:
- *            type: object
- *            properties:
- *              name:
- *                type: string
- *              price:
- *                type: number
+ *            $ref: '#/components/schemas/Pizza'
  *    responses:
  *      200:
- * description: Pizza ajoutée avec succès
+ *        description: Pizza ajoutée avec succès
  */
+
+/**
+ * @swagger
+ * /pizzas/update/{id}:
+ *   patch:
+ *     summary: Modifier une pizza
+ *     tags: [Pizzas]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID de la pizza à modifier
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Margherita"
+ *               price:
+ *                 type: number
+ *                 example: 13.0
+ *     responses:
+ *       200:
+ *         description: Pizza modifiée avec succès
+ *       400:
+ *         description: Données invalides
+ *       404:
+ *         description: Pizza non trouvée
+ *       500:
+ *         description: Erreur serveur
+ */
+
+/**
+ * @swagger
+ * /pizzas/{id}:
+ *   delete:
+ *     summary: Supprimer une pizza
+ *     tags: [Pizzas]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID de la pizza à supprimer
+ *         schema:
+ *           type: integer
+ *           example: 3
+ *     responses:
+ *       200:
+ *         description: Pizza supprimée avec succès
+ *       404:
+ *         description: Pizza non trouvée
+ *       500:
+ *         description: Erreur serveur
+ */
+
 /* GET pizzas listing. */
 router.get('/',  async function (req, res, next) {
     try {
