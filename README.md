@@ -29,18 +29,18 @@ L'application sera accessible sur http://localhost:3002
 Ou modifier le fichier bin/www
 
 2. Fonctions principaux
-# Pizza
+## Pizza
 Get/pizzas : Liste toutes les pizzas
 Post/pizzas/create : Ajouter une nouvelle pizza
 Patch/pizzas/update/:id : Modifier une pizza existante
 Delete/pizzas/:id : Supprimer une pizza
 
-# Ingrédients
+## Ingrédients
 Get/ingredients : Liste toutes les ingrédients
 Post/ingredients/create : Créer un ingrédient
 Delete/ingredients/:id : Supprimer un ingrédient
 
-# Spécial (Pizza du jour)
+## Spécial (Pizza du jour)
 Get/special : Récupérer la pizza du jour avec ses détails
 Patch/special/:id : Définir une pizza comme étant la pizza du jour
 
