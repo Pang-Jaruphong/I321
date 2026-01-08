@@ -22,6 +22,10 @@ const dbcon = require('../config/database');
  *         price:
  *           type: number
  *           example: 13.0
+ *         ingredients:
+ *           type: string
+ *           description: Liste des ingrédients séparés par une virgule
+ *           example: "Tomate, Mozzarelle"
  */
 
 /**
@@ -39,6 +43,8 @@ const dbcon = require('../config/database');
  *              type: array
  *              items:
  *                $ref: '#/components/schemas/Pizza'
+ *      500 :
+ *        description: Erreur serveur
  */
 
 /**
