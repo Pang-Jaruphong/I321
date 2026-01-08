@@ -90,7 +90,7 @@ const dbcon = require('../config/database');
 router.get('/',  async function (req, res, next) {
     try {
         const sqlQuery = 'SELECT * FROM ingredients';
-        const [rows, fields] = await dbcon.execute(sqlQuery);
+        const [rows] = await dbcon.execute(sqlQuery);
         res.json(rows);
     } catch (err) {
         console.error("Erreur de BDD", err.message);
