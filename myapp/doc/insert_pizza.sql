@@ -37,9 +37,15 @@ INSERT INTO promotion (id, pizzas_id, description) VALUES
 (102, 2, 'Le mercredi, la Margherita est à 10.-'),
 (103, 3, 'Le samedi et dimanche, 4 Saison est à 14.-');
 
+-- Ajouter condition pour le pizza du jour
 ALTER TABLE pizzas
     ADD COLUMN is_special BOOLEAN DEFAULT FALSE;
 
+-- Définir que pizza id = 1 (la Diavola) est le pizza du jour
 UPDATE pizzas
 SET is_special = TRUE
 WHERE id = 1;
+
+-- Eviter le doublon quand on ajoute le nouveau élément
+ALTER TABLE pizzas ADD UNIQUE (NAME);
+ALTER TABLE ingredients ADD UNIQUE (name);
