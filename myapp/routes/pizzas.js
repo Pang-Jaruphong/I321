@@ -120,9 +120,21 @@ const dbcon = require('../config/database');
  */
 
 /* GET pizzas listing. */
+/* Aider par ChatGPT pour corriger la requête sql pour afficher joliment en groupant des éléments*/
 router.get('/',  async function (req, res, next) {
     try {
-        const sqlQuery = 'SELECT * FROM pizzas';
+        const sqlQuery = `
+            SELECT 
+                p.id as id,
+                p.name as name,
+                p.price,
+                GROUP_CONCAT(i.name SEPARATOR ', ') as ingredients
+            FROM pizzas p
+            INNER JOIN composition c on p.id = c.pizzas_id
+            INNER JOIN ingredients i on c.ingredients_id =i.id
+            GROUP BY p.id, p.name, p.price
+            ORDER BY p.id
+            `;
         const [rows] = await dbcon.execute(sqlQuery);
         res.json(rows);
     } catch (err) {
