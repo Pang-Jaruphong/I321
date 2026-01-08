@@ -110,13 +110,13 @@ router.post('/create', async (req, res) => {
         const [result] = await dbcon.query(sql, [name.trim()]);
 
         res.json({
-            message: `L'ingrédient ${name} a bien été ajouté !`,
+            message: `L'ingrédient ${name.trim()} a bien été ajouté !`,
             ingredient: { id: result.insertId, name: name.trim() }
         });
     } catch (err) {
         if (err.code === 'ER_DUP_ENTRY') {
             return res.status(409).json({ // 409 Conflict
-                error: `L'ingrédient "${req.params.name}" existe déjà.`
+                error: `L'ingrédient "${req.body.name}" existe déjà.`
             });
         }
 
@@ -144,7 +144,7 @@ router.delete('/:id', async function (req, res) {
             return res.status(404).json({ message: "Ingrédient non trouvé." });
         }
 
-        res.json({ message: "Ingrédient supprimé avec succès." });
+        res.json({ message: `Ingrédient "${req.body.name}" supprimé avec succès.` });
     } catch (err) {
         await connection.rollback();
         console.error(err);

@@ -247,7 +247,7 @@ router.delete('/:id', async function (req, res) {
             return res.status(404).json({ message: "Pizza non trouvée" });
         }
 
-        res.json({ message: "Pizza supprimée avec succès" });
+        res.json({ message: `Pizza "${req.body.name}" supprimée avec succès` });
     } catch (err) {
         await connection.rollback();
         console.error(err);
