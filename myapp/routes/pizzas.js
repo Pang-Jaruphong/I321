@@ -150,6 +150,43 @@ router.get('/',  async function (req, res, next) {
             error: err.message});
     }
 });
+router.get('/:id', async function (req, res, next) {
+    try {
+        // 1. On récupère l'ID passé dans l'URL (ex: /pizzas/5)
+        const pizzaId = req.params.id;
+
+        const sqlQuery = `
+            SELECT 
+                p.id as id,
+                p.name as name,
+                p.price,
+                GROUP_CONCAT(i.name SEPARATOR ', ') as ingredients
+            FROM pizzas p
+            LEFT JOIN composition c ON p.id = c.pizzas_id
+            LEFT JOIN ingredients i ON c.ingredients_id = i.id
+            WHERE p.id = ?
+            GROUP BY p.id, p.name, p.price
+        `;
+
+        // 2. On passe pizzaId dans un tableau pour sécuriser la requête (anti-injection SQL)
+        const [rows] = await dbcon.execute(sqlQuery, [pizzaId]);
+
+        // 3. On vérifie si une pizza a été trouvée
+        if (rows.length === 0) {
+            return res.status(404).json({ message: "Pizza non trouvée" });
+        }
+
+        // On renvoie l'objet seul (rows[0]) plutôt que le tableau complet
+        res.json(rows[0]);
+
+    } catch (err) {
+        console.error("Erreur de BDD", err.message);
+        res.status(500).json({
+            message: 'Erreur serveur : Impossible de lire la base de données.',
+            error: err.message
+        });
+    }
+});
 
 router.post('/create', async (req, res) => {
     try {
